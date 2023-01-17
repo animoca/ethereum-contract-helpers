@@ -1,0 +1,27 @@
+# npm
+node_modules/
+.npmrc*
+
+# yarn
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
+
+# yalc
+.yalc
+yalc.lock
+
+# vscode
+.vscode/*
+!.vscode/settings.json.default
+!.vscode/launch.json.default
+!.vscode/extensions.json.default
+
+# env
+.env*
+!.env.example
+
+# misc
+*.log
+.DS_Store
