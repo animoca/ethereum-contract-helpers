@@ -1,5 +1,5 @@
 const mergeWith = require('lodash.mergewith');
-const glob = require('glob');
+const {globSync} = require('glob');
 
 function customizer(objValue, srcValue) {
   if (Array.isArray(objValue)) {
@@ -17,7 +17,7 @@ function mergeConfigs(...configs) {
 }
 
 function loadConfigFolder(folder) {
-  const files = glob.sync(`${folder}/*.config.js`);
+  const files = globSync(`${folder}/*.config.js`);
   const configs = files.map((cfg) => require(cfg));
   return mergeConfigs(...configs);
 }

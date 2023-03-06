@@ -1,6 +1,6 @@
 {
   "name": "@animoca/ethereum-contract-helpers",
-  "version": "0.0.2-alpha.0",
+  "version": "0.0.2",
   "description": "Helpers for solidity smart-contracts projects",
   "keywords": [
     "animoca",
@@ -34,7 +34,7 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-mocha": "^10.1.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "ethers": "^6.0.8",
+    "ethers": "^5.7.2",
     "fs-extra": "^11.1.0",
     "glob": "^9.2.1",
     "hardhat": "^2.13.0",
