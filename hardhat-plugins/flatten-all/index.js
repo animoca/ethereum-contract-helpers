@@ -1,6 +1,6 @@
 const fse = require('fs-extra');
 const path = require('path');
-const glob = require('glob/sync');
+const {globSync} = require('glob');
 const {TASK_FLATTEN_GET_FLATTENED_SOURCE} = require('hardhat/builtin-tasks/task-names');
 const {extendConfig, task} = require('hardhat/config');
 const {normalizePath} = require('../utils');
@@ -11,7 +11,7 @@ extendConfig((config, userConfig) => {
 
 task('flatten-all', 'Flattens and saves each individual solidity file', async (taskArguments, env) => {
   const contractsPath = path.relative(process.cwd(), env.config.paths.sources);
-  const files = glob(`${contractsPath}/**/*.sol`);
+  const files = globSync(`${contractsPath}/**/*.sol`);
   for (const file of files) {
     const source = await env.run(TASK_FLATTEN_GET_FLATTENED_SOURCE, {
       files: [file],
