@@ -6,9 +6,7 @@ extendEnvironment((hre) => {
   const config = cloneDeep(hre.config);
   for (const networkName of Object.keys(config.networks)) {
     const network = config.networks[networkName];
-    if (network.live) {
-      delete network.accounts;
-    }
+    delete network.accounts;
   }
   fse.writeFileSync(
     'hardhat.config.last.json',
