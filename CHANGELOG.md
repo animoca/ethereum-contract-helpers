@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.4
+
+- Fix dependabot security alerts.
+
 ## 0.0.3
 
 - Remove the accounts section of the output hardhat configuration file in every case.

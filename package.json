@@ -1,6 +1,6 @@
 {
   "name": "@animoca/ethereum-contract-helpers",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Helpers for solidity smart-contracts projects",
   "keywords": [
     "animoca",
