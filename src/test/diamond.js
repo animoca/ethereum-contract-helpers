@@ -10,21 +10,29 @@ const FacetCutAction = {
   Remove: 2,
 };
 
-function mergeABIs(abi, extensions, abiFilter) {
-  for (const extension of extensions) {
-    const abiErrors = abi.filter((el) => el.type === 'error');
-    abi.push(...extension.filter((el) => el.type !== 'constructor' && el.type !== 'error').filter(abiFilter));
-    const extensionErrors = extension.filter((el) => el.type === 'error');
-    for (const extensionError of extensionErrors) {
-      // prevent errors duplication
-      if (abiErrors.find((error) => isEqual(error, extensionError)) === undefined) {
-        abi.push(extensionError);
-      }
+function insertInABIWithoutDuplication(abi, extension, elementType) {
+  const abiElements = abi.filter((el) => el.type === elementType);
+  const extensionElements = extension.filter((el) => el.type === elementType);
+  for (const extensionElement of extensionElements) {
+    if (abiElements.find((el) => isEqual(el, extensionElement)) === undefined) {
+      abi.push({...extensionElement});
     }
   }
 }
 
-const newFacetFilter = (el) => !el.name.startsWith('init') && !el.name.startsWith('__');
+function mergeABIs(abi, extensions, abiFilter) {
+  for (const extension of extensions) {
+    abi.push(
+      ...extension
+        .filter((el) => el.type === 'function')
+        .filter(abiFilter)
+    );
+    insertInABIWithoutDuplication(abi, extension, 'error');
+    insertInABIWithoutDuplication(abi, extension, 'event');
+  }
+}
+
+const newFacetFilter = (el) => el.type !== 'function' || (!el.name.startsWith('init') && !el.name.startsWith('__'));
 
 function getSelectors(facet, abiFilter) {
   let functions = Object.values(facet.interface.functions);
@@ -58,16 +66,20 @@ async function deployFacets(facetsConfig, args, abiFilter) {
 
 async function deployDiamond(facetsConfig, args, abiExtensions = [], abiFilter = newFacetFilter, implementation = 'Diamond') {
   const facetDeployments = await deployFacets(facetsConfig, args, abiFilter);
-  const artifact = await deployments.getArtifact(implementation);
-  const abi = [...artifact.abi];
-  const facetABIs = Object.values(facetDeployments.facets).map((facet) => JSON.parse(facet.interface.format(ethers.utils.FormatTypes.json)));
+  const diamondArtifact = await deployments.getArtifact(implementation);
+  const abi = [...diamondArtifact.abi];
+  const facetABIs = [];
+  for (const facetConfig of facetsConfig) {
+    const facetArtifact = await deployments.getArtifact(facetConfig.name);
+    facetABIs.push(facetArtifact.abi);
+  }
   const extensionABIs = [];
   for (const extension of abiExtensions) {
     const extensionArtifact = await deployments.getArtifact(extension);
     extensionABIs.push(extensionArtifact.abi);
   }
   mergeABIs(abi, [...facetABIs, ...extensionABIs], abiFilter);
-  const Diamond = await ethers.getContractFactory(abi, artifact.bytecode);
+  const Diamond = await ethers.getContractFactory(abi, diamondArtifact.bytecode);
   const diamond = await Diamond.deploy(facetDeployments.cuts, facetDeployments.inits);
   await diamond.deployed();
   return {

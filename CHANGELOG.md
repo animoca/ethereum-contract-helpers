@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.5
+
+- Prevent events duplications in merged diamond ABIs.
+
 ## 0.0.4
 
 - Fix dependabot security alerts.
