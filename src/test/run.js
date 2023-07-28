@@ -125,7 +125,7 @@ function runBehaviorTests(name, config, behaviorFn) {
                     await deployments.diamond.changeProxyAdmin(constants.AddressZero);
                     const mainFacetInitArguments =
                       facet.init.arguments !== undefined ? facet.init.arguments.map((arg) => this.defaultArguments[arg]) : [];
-                    await expect(deployments.diamond[facet.init.method](...mainFacetInitArguments)).to.be.revertedWith('ProxyAdmin: not the admin');
+                    await expect(deployments.diamond[facet.init.method](...mainFacetInitArguments)).to.be.revertedWithCustomError(deployments.diamond, 'NotProxyAdmin');
                   });
                 }
 
@@ -139,7 +139,7 @@ function runBehaviorTests(name, config, behaviorFn) {
                     const cut = facetInit(deployments.facets[facet.name], facet.init.method, mainFacetInitArguments);
                     await expect(
                       deployments.diamond.functions['diamondCut((address,uint8,bytes4[])[],address,bytes)']([], ...cut)
-                    ).to.be.revertedWith('Storage: phase reached');
+                    ).to.be.revertedWithCustomError(deployments.diamond, 'InitializationPhaseAlreadyReached');
                   });
                 }
               });

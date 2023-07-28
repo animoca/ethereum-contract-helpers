@@ -22,11 +22,7 @@ function insertInABIWithoutDuplication(abi, extension, elementType) {
 
 function mergeABIs(abi, extensions, abiFilter) {
   for (const extension of extensions) {
-    abi.push(
-      ...extension
-        .filter((el) => el.type === 'function')
-        .filter(abiFilter)
-    );
+    abi.push(...extension.filter((el) => el.type === 'function').filter(abiFilter));
     insertInABIWithoutDuplication(abi, extension, 'error');
     insertInABIWithoutDuplication(abi, extension, 'event');
   }

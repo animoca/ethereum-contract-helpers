@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.6
+
+- Add function `expectRevert` to handle both legacy or custom errors in test templates.
+
 ## 0.0.5
 
 - Prevent events duplications in merged diamond ABIs.
