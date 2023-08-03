@@ -125,7 +125,10 @@ function runBehaviorTests(name, config, behaviorFn) {
                     await deployments.diamond.changeProxyAdmin(constants.AddressZero);
                     const mainFacetInitArguments =
                       facet.init.arguments !== undefined ? facet.init.arguments.map((arg) => this.defaultArguments[arg]) : [];
-                    await expect(deployments.diamond[facet.init.method](...mainFacetInitArguments)).to.be.revertedWithCustomError(deployments.diamond, 'NotProxyAdmin');
+                    await expect(deployments.diamond[facet.init.method](...mainFacetInitArguments)).to.be.revertedWithCustomError(
+                      deployments.diamond,
+                      'NotProxyAdmin'
+                    );
                   });
                 }
 
