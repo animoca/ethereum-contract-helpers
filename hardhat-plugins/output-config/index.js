@@ -10,6 +10,6 @@ extendEnvironment((hre) => {
   }
   fse.writeFileSync(
     'hardhat.config.last.json',
-    JSON.stringify(config, (_, value) => (typeof value === 'bigint' ? value.toString() : value), 2)
+    JSON.stringify(config, (_, value) => (typeof value === 'bigint' ? value.toString() : value), 2),
   );
 });
