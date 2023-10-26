@@ -1,5 +1,4 @@
 const {ethers, deployments} = require('hardhat');
-const {utils} = ethers;
 const {deployContract} = require('./deploy');
 
 const isEqual = require('lodash.isequal');
