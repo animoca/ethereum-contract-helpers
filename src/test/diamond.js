@@ -32,7 +32,7 @@ const newFacetFilter = (el) => el.type !== 'function' || (!el.name.startsWith('i
 function getSelectors(facet, abiFilter) {
   const selectors = [];
   facet.interface.forEachFunction((fn) => {
-    if (abiFilter(fn)) {
+    if (abiFilter === undefined || abiFilter(fn)) {
       selectors.push(fn.selector);
     }
   });
