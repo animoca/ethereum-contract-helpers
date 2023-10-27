@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0
+
+- Updated to using `^ethers@6`.
+
 ## 0.0.6
 
 - Add function `expectRevert` to handle both legacy or custom errors in test templates.

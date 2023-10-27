@@ -1,5 +1,4 @@
 const {ethers, deployments} = require('hardhat');
-const {utils} = ethers;
 const {deployContract} = require('./deploy');
 
 const isEqual = require('lodash.isequal');
@@ -31,15 +30,17 @@ function mergeABIs(abi, extensions, abiFilter) {
 const newFacetFilter = (el) => el.type !== 'function' || (!el.name.startsWith('init') && !el.name.startsWith('__'));
 
 function getSelectors(facet, abiFilter) {
-  let functions = Object.values(facet.interface.functions);
-  if (abiFilter !== undefined) {
-    functions = functions.filter(abiFilter);
-  }
-  return functions.map((f) => utils.Interface.getSighash(f));
+  const selectors = [];
+  facet.interface.forEachFunction((fn) => {
+    if (abiFilter === undefined || abiFilter(fn)) {
+      selectors.push(fn.selector);
+    }
+  });
+  return selectors;
 }
 
-function facetInit(facet, initMethod, initArgs) {
-  return [facet.address, facet.interface.encodeFunctionData(initMethod, initArgs)];
+async function facetInit(facet, initMethod, initArgs) {
+  return [await facet.getAddress(), facet.interface.encodeFunctionData(initMethod, initArgs)];
 }
 
 async function deployFacets(facetsConfig, args, abiFilter) {
@@ -50,10 +51,10 @@ async function deployFacets(facetsConfig, args, abiFilter) {
     const ctorArguments = config.ctorArguments !== undefined ? config.ctorArguments.map((arg) => args[arg]) : [];
     const facet = await deployContract(config.name, ...ctorArguments);
     facets[config.name] = facet;
-    cuts.push([facet.address, FacetCutAction.Add, getSelectors(facet, abiFilter)]);
+    cuts.push([await facet.getAddress(), FacetCutAction.Add, getSelectors(facet, abiFilter)]);
     if (config.init !== undefined) {
       const initArguments = config.init.arguments !== undefined ? config.init.arguments.map((arg) => args[arg]) : [];
-      inits.push([facet.address, facet.interface.encodeFunctionData(config.init.method, initArguments)]);
+      inits.push([await facet.getAddress(), facet.interface.encodeFunctionData(config.init.method, initArguments)]);
     }
   }
 
@@ -77,7 +78,7 @@ async function deployDiamond(facetsConfig, args, abiExtensions = [], abiFilter =
   mergeABIs(abi, [...facetABIs, ...extensionABIs], abiFilter);
   const Diamond = await ethers.getContractFactory(abi, diamondArtifact.bytecode);
   const diamond = await Diamond.deploy(facetDeployments.cuts, facetDeployments.inits);
-  await diamond.deployed();
+  await diamond.waitForDeployment();
   return {
     diamond,
     facets: facetDeployments.facets,

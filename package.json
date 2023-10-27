@@ -1,6 +1,6 @@
 {
   "name": "@animoca/ethereum-contract-helpers",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "description": "Helpers for solidity smart-contracts projects",
   "keywords": [
     "animoca",
@@ -24,27 +24,27 @@
     "run-all": "run-s format fix"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-chai-matchers": "^1.0.6",
-    "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
-    "@nomiclabs/hardhat-ethers": "^2.2.2",
-    "chai": "^4.3.7",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.2",
+    "@nomicfoundation/hardhat-ethers": "^3.0.4",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.9",
+    "chai": "^4.3.10",
     "cross-env": "^7.0.3",
-    "eslint": "^8.35.0",
+    "eslint": "^8.52.0",
     "eslint-config-mocha": "^0.0.0",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-plugin-mocha": "^10.1.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "ethers": "^5.7.2",
-    "fs-extra": "^11.1.0",
-    "glob": "^9.2.1",
-    "hardhat": "^2.13.0",
-    "hardhat-deploy": "^0.11.24",
-    "hardhat-deploy-ethers": "^0.3.0-beta.13",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-mocha": "^10.2.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "ethers": "^6.8.0",
+    "fs-extra": "^11.1.1",
+    "glob": "^10.3.10",
+    "hardhat": "^2.18.3",
+    "hardhat-deploy": "^0.11.43",
+    "hardhat-deploy-ethers": "^0.4.1",
     "lodash.clonedeep": "^4.5.0",
     "lodash.isequal": "^4.5.0",
     "lodash.mergewith": "^4.6.2",
     "mocha": "^10.2.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.8.4"
+    "prettier": "^3.0.3"
   }
 }

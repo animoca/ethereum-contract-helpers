@@ -1,7 +1,6 @@
 const {ethers} = require('hardhat');
 const {expect} = require('chai');
 const {getArtifactFromFolders} = require('hardhat-deploy/dist/src/utils');
-const {constants} = ethers;
 
 const {deployContract, deployContractFromPath} = require('./deploy');
 const {deployDiamond, facetInit, mergeABIs} = require('./diamond');
@@ -38,7 +37,7 @@ function runBehaviorTests(name, config, behaviorFn) {
     mergeABIs(abi, extensionABIs, (el) => el.type !== 'constructor');
     const Contract = await ethers.getContractFactory(abi, artifact.bytecode);
     const contract = await Contract.deploy(...ctorArguments);
-    await contract.deployed();
+    await contract.waitForDeployment();
     return contract;
   }
 
@@ -76,8 +75,8 @@ function runBehaviorTests(name, config, behaviorFn) {
 
     const proxyAdminContract = await deployContractFromPath('ProxyAdmin', 'node_modules/hardhat-deploy/extendedArtifacts', arguments_.initialAdmin);
     const TransparentUpgradeableProxy = await ethers.getContractFactory(abi, proxyArtifact.bytecode);
-    const proxy = await TransparentUpgradeableProxy.deploy(contract.address, proxyAdminContract.address, initCall);
-    await proxy.deployed();
+    const proxy = await TransparentUpgradeableProxy.deploy(await contract.getAddress(), await proxyAdminContract.getAddress(), initCall);
+    await proxy.waitForDeployment();
     return proxy;
   }
 
@@ -122,12 +121,12 @@ function runBehaviorTests(name, config, behaviorFn) {
                     const facets = [...config.diamond.facets];
                     const abiExtensions = config.abiExtensions !== undefined ? config.abiExtensions : [];
                     const deployments = await deployDiamond(facets, this.defaultArguments, abiExtensions, (el) => !el.name.startsWith('__'));
-                    await deployments.diamond.changeProxyAdmin(constants.AddressZero);
+                    await deployments.diamond.changeProxyAdmin(ethers.ZeroAddress);
                     const mainFacetInitArguments =
                       facet.init.arguments !== undefined ? facet.init.arguments.map((arg) => this.defaultArguments[arg]) : [];
                     await expect(deployments.diamond[facet.init.method](...mainFacetInitArguments)).to.be.revertedWithCustomError(
                       deployments.diamond,
-                      'NotProxyAdmin'
+                      'NotProxyAdmin',
                     );
                   });
                 }
@@ -139,9 +138,9 @@ function runBehaviorTests(name, config, behaviorFn) {
                     const deployments = await deployDiamond(facets, this.defaultArguments, abiExtensions);
                     const mainFacetInitArguments =
                       facet.init.arguments !== undefined ? facet.init.arguments.map((arg) => this.defaultArguments[arg]) : [];
-                    const cut = facetInit(deployments.facets[facet.name], facet.init.method, mainFacetInitArguments);
+                    const cut = await facetInit(deployments.facets[facet.name], facet.init.method, mainFacetInitArguments);
                     await expect(
-                      deployments.diamond.functions['diamondCut((address,uint8,bytes4[])[],address,bytes)']([], ...cut)
+                      deployments.diamond['diamondCut((address,uint8,bytes4[])[],address,bytes)']([], ...cut),
                     ).to.be.revertedWithCustomError(deployments.diamond, 'InitializationPhaseAlreadyReached');
                   });
                 }
