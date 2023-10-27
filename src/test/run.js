@@ -138,9 +138,9 @@ function runBehaviorTests(name, config, behaviorFn) {
                     const deployments = await deployDiamond(facets, this.defaultArguments, abiExtensions);
                     const mainFacetInitArguments =
                       facet.init.arguments !== undefined ? facet.init.arguments.map((arg) => this.defaultArguments[arg]) : [];
-                    const cut = facetInit(deployments.facets[facet.name], facet.init.method, mainFacetInitArguments);
+                    const cut = await facetInit(deployments.facets[facet.name], facet.init.method, mainFacetInitArguments);
                     await expect(
-                      deployments.diamond.functions['diamondCut((address,uint8,bytes4[])[],address,bytes)']([], ...cut),
+                      deployments.diamond['diamondCut((address,uint8,bytes4[])[],address,bytes)']([], ...cut),
                     ).to.be.revertedWithCustomError(deployments.diamond, 'InitializationPhaseAlreadyReached');
                   });
                 }
