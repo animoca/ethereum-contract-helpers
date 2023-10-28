@@ -2,7 +2,7 @@ const {ethers} = require('hardhat');
 const {getArtifactFromFolders} = require('hardhat-deploy/dist/src/utils');
 
 async function deployContract(name, ...args) {
-  const contract = await (await ethers.getContractFactory(name)).deploy(...args);
+  const contract = await (await ethers.getContractFactoryFromArtifact(await deployments.getArtifact(name))).deploy(...args);
   await contract.waitForDeployment();
   return contract;
 }
