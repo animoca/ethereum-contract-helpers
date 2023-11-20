@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+- Downgrade `glob` to fix some dependency issue related to `eslint`.
+
 ## 1.0.2
 
 - Fix `hardhat-deploy-ethers` issue with `getContractFactory` in `deployContract`.
