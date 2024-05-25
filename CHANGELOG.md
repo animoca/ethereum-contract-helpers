@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.4
+
+- Upgrade all dependencies to latest versions.
+- Move some `devDependencies` to `dependencies`.
+
 ## 1.0.3
 
 - Downgrade `glob` to fix some dependency issue related to `eslint`.
