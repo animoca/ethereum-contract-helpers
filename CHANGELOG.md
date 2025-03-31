@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.5
+
+- Use `node:util:isDeepStrictEqual` instead of `lodash.isequal`.
+- Updated to latest dependencies.
+
 ## 1.0.4
 
 - Upgrade all dependencies to latest versions.

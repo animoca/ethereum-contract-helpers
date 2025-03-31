@@ -1,7 +1,6 @@
 const {ethers, deployments} = require('hardhat');
+const {isDeepStrictEqual} = require('node:util');
 const {deployContract} = require('./deploy');
-
-const isEqual = require('lodash.isequal');
 
 const FacetCutAction = {
   Add: 0,
@@ -13,7 +12,7 @@ function insertInABIWithoutDuplication(abi, extension, elementType) {
   const abiElements = abi.filter((el) => el.type === elementType);
   const extensionElements = extension.filter((el) => el.type === elementType);
   for (const extensionElement of extensionElements) {
-    if (abiElements.find((el) => isEqual(el, extensionElement)) === undefined) {
+    if (abiElements.find((el) => isDeepStrictEqual(el, extensionElement)) === undefined) {
       abi.push({...extensionElement});
     }
   }
