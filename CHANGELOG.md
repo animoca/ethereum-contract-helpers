@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.6
+
+- Added `varsIgnorePattern` to eslint config.
+
 ## 1.0.5
 
 - Use `node:util:isDeepStrictEqual` instead of `lodash.isequal`.
