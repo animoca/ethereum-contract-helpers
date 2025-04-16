@@ -12,7 +12,7 @@ module.exports = [
       },
     },
     rules: {
-      'no-unused-vars': ['error', {argsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_'}],
+      'no-unused-vars': ['error', {varsIgnorePattern: '^_', argsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_'}],
       'no-multi-spaces': ['error', {exceptions: {VariableDeclarator: true}}],
       'no-else-return': ['error', {allowElseIf: true}],
       'max-params': ['error', 7],

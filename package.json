@@ -1,6 +1,6 @@
 {
   "name": "@animoca/ethereum-contract-helpers",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Helpers for solidity smart-contracts projects",
   "keywords": [
     "animoca",
@@ -28,13 +28,13 @@
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.12",
     "chai": "^4.5.0",
-    "eslint": "^9.23.0",
-    "eslint-config-prettier": "^10.1.1",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-mocha": "^10.5.0",
-    "eslint-plugin-prettier": "^5.2.5",
+    "eslint-plugin-prettier": "^5.2.6",
     "ethers": "^6.13.5",
-    "hardhat": "^2.22.19",
-    "hardhat-deploy": "^1.0.1",
+    "hardhat": "^2.23.0",
+    "hardhat-deploy": "^1.0.2",
     "hardhat-deploy-ethers": "^0.4.2",
     "mocha": "^11.1.0",
     "prettier": "^3.5.3"
